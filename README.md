@@ -9,3 +9,7 @@ The ESP code - the bot itself
 Landing page of the IRCBot
 **ircseeker.php**
 Frontend
+**genplot.py**
+plots today statistics
+**genplot2.py**
+plots alltime statistics
