@@ -1,10 +1,11 @@
 <?php
+	header('Content-type: text/html; charset=utf-8');
 	require_once 'dbclass.php';
 	ob_start();
 	//DB::debugMode();
-	DB::$user = 'user';
-	DB::$password = 'pass';
-	DB::$dbName = 'db';
+	DB::$user = 'sont';
+	DB::$password = 'macskaszar555';
+	DB::$dbName = 'nodemcu';
 	
 	define("_BBC_PAGE_NAME", "IRCSeeker"); 
 	define("_BBCLONE_DIR", "bbclone/"); 
@@ -17,8 +18,11 @@
 
 <html>
 <head>
-<title>Tauri IRC Log seeker</title>
+<title>Tauri IRC Log Browser</title>
 <style>
+a{
+	color: black;
+}
 #header{
 	background-color:#C3D7DF;
 	border-radius: 10px;
@@ -29,6 +33,8 @@
 }
 #header:hover{
 	background-color:#F17D80;
+	    transition: background-color 3s;
+    -webkit-transition: background-color 3s;
 }
 #alsav{
         background-color:#FF5733;
@@ -41,10 +47,15 @@
 #alsav:hover{
         background-color:#FFC300;
 }
+#cim{
+	font-size: 150%;
+}
 #keret{
 	border-radius: 10px;
 	padding: 5px;
 	border: 2px dashed black;
+	    transition: background-color 3s;
+    -webkit-transition: background-color 3s;
 }
 #keret:hover{
 	border: 2px dashed black;
@@ -57,6 +68,8 @@
 	padding: 5px;
 	border: 2px dashed black;
 	background-color:#ededed;
+	    transition: background-color 3s;
+    -webkit-transition: background-color 3s;
 }
 #footer{
 	opacity: 0.8;
@@ -105,7 +118,7 @@
 @media only screen and (max-device-width: 480px) {
     img { width: 100%; height: 20%; }
 	body { background-color: white; }
-	#cim { font-color: red; font-size: 300%; }
+	#cim { font-size: 300%; }
 	#date { text-align: center; width: 50%; margin: 0 auto; }
 	input { width: 100%; height: 5%; margin: 5px; font-size: 40px; }
 	#footer { display: none; }
@@ -114,55 +127,72 @@
 }
 #mai{
 	font-color: white;
-	font-size: 150%;
+	font-size: 200%;
 	border-radius: 3px;
+		transition: background-color 3s;
+    -webkit-transition: background-color 3s;
 }
 #mai:hover{
 	background-color: lightgrey;
-	font-size: 150%;
+	font-size: 200%;
 	border-radius: 3px;
+	    transition: background-color 3s;
+    -webkit-transition: background-color 3s;
+}
+#feher{
+	font-color: white;
 }
 .osztaly{
-	
+	font-color: black;
 }
 .osztaly:hover{
-	
+	font-color: black;
 }
 </style>
  <link rel="stylesheet" type="text/css" href="tooltip.css">
+ <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
 </head>
 <body>
 <div id=keret>
-<center id=mai><h2 id=cim>Tauri IRClog browser</h2></center>
+<a class="osztaly" href="https://sont.sytes.net/ircseeker.php" style="text-decoration:none">
+	<div id=cim>
+	<center><h2>Tauri IRClog browser</h2></center>
+	</div>
+</a>
 <a href="chart2.png"><div id=lebeg><span class="tool" data-tip="2018-09-29 óta gyűjtött adatok alapján.">ALL TIME STAT</span></div></a>
 <div id=lebeg2><span class="tool" data-tip="Előzmények 2018-09-29 után érhetőek el hiánytalanul.">INFO</span>
-</div><center><img src="chart.png" alt="chart" height="15%" width="50%"></center><br>
+</div><center><div><img src="chart.png" alt="chart" height="15%" width="50%"></div></center><br>
 <div id=mai><center><b>
 <?php
 	$msgdarab = DB::query("SELECT COUNT(*) from irclog where whattime >= CURDATE() group by WEEKDAY(whattime) order by WEEKDAY(whattime);");
 	foreach ($msgdarab as $row) { echo $row['COUNT(*)']; }
-?> Üzenet érkezett ma
+?> üzenet érkezett ma
 </b></center></div><br>
+<center>
 <div id=header style="width: 99%">
 	<form action="" method="post">
 	<br>
 	<div id=date><b id=cim>Keyword</b></div>
 	<input id=meret type="text" name="msg" value="<?php echo $_POST["msg"]; ?>">
-	<input type="submit" class=button>
+	<br><input type="submit" class=button>
 	</form>
 </div><br>
+
 <div id=alsav style="width: 99%">
 	<form action="" method="post">
 	<br>
-	<div id=date><b id=cim>Date from</b></div>
-	<input type="date" name="datefrom" value=""><!--<input type="time" name="timefrom" value="">--><br>
-	<div id=date><b id=cim>Date until</b></div>
-	<input type="date" name="dateto" value=""><!--<input type="time" name="timefrom" value="">-->
-	<input id=meret type="submit" class=button>
+	<div id=date><b id=cim>From</b></div>
+	<input type="date" name="datefrom" value="<?php echo date('Y-m-d',strtotime("-1 days")); ?>"><!--<input type="time" name="timefrom" value="">--><br>
+	<div id=date><b id=cim>Until</b></div>
+	<input type="date" name="dateto" value="<?php echo date('Y-m-d'); ?>"><!--<input type="time" name="timefrom" value="">-->
+	<br><input id=meret type="submit" class=button>
 	</form>
 </div>
+</center>
 <br>
 <div id=keret2>
+<br>
+
 <?php
 
 if(isset($_POST["msg"])) {
@@ -197,8 +227,8 @@ function highlight($wholetext, $substr){
 }
 ?>
 </div>
-<div id=footer>Created by: Sontii | 2018
-Armory link: <b><a href="https://tauriwow.com/armory#character-sheet.xml?r=%5BHU%5D%20Tauri%20WoW%20Server&n=S%C3%B8ntii">KATT!</a></b>
+<div id=footer>Created by: Sontii | 2018 |
+Armory: https://tauriwow.com/armory#character-sheet.xml?r=%5BHU%5D%20Tauri%20WoW%20Server&n=S%C3%B8ntii</div></b>
 </div>
 </body>
 
