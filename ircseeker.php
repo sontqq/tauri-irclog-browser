@@ -3,9 +3,9 @@
 	require_once 'dbclass.php';
 	ob_start();
 	//DB::debugMode();
-	DB::$user = 'sont';
-	DB::$password = 'macskaszar555';
-	DB::$dbName = 'nodemcu';
+	DB::$user = 'user';
+	DB::$password = 'pw';
+	DB::$dbName = 'db';
 	
 	define("_BBC_PAGE_NAME", "IRCSeeker"); 
 	define("_BBCLONE_DIR", "bbclone/"); 
