@@ -1,11 +1,12 @@
 <?php
 	header('Content-type: text/html; charset=utf-8');
+	header ("Cache-Control: max-age=200");
 	require_once 'dbclass.php';
 	ob_start();
 	//DB::debugMode();
-	DB::$user = 'user';
-	DB::$password = 'pw';
-	DB::$dbName = 'db';
+	DB::$user = '';
+	DB::$password = '';
+	DB::$dbName = '';
 	
 	define("_BBC_PAGE_NAME", "IRCSeeker"); 
 	define("_BBCLONE_DIR", "bbclone/"); 
@@ -23,6 +24,9 @@
 a{
 	color: black;
 }
+input {
+   //
+}
 #header{
 	background-color:#C3D7DF;
 	border-radius: 10px;
@@ -33,11 +37,11 @@ a{
 }
 #header:hover{
 	background-color:#F17D80;
-	    transition: background-color 3s;
+	transition: background-color 3s;
     -webkit-transition: background-color 3s;
 }
 #alsav{
-        background-color:#FF5733;
+        background-color:#FFC300;
         border-radius: 10px;
         padding: 5px;
         border: 2px dashed black;
@@ -45,7 +49,7 @@ a{
         -webkit-transition: background-color 1s;
 }
 #alsav:hover{
-        background-color:#FFC300;
+        background-color:#FF5733;
 }
 #cim{
 	font-size: 150%;
@@ -61,7 +65,9 @@ a{
 	border: 2px dashed black;
     transition: background-color 3s;
     -webkit-transition: background-color 3s;
-	background-color:rgba(0, 0, 0, 0.7);
+	//background-color:rgba(0, 0, 0, 0.7);
+	background-color:#43ABC9;
+	// B5C689 EFD469 F58B4C <-- YES THIS IS AN URL --> viget.com/articles/color-contrast
 }
 #keret2{
 	border-radius: 10px;
@@ -148,9 +154,22 @@ a{
 .osztaly:hover{
 	font-color: black;
 }
+#nextto{
+	display: inline-block;
+}
+#date{
+	display: inline-block;
+}
 </style>
- <link rel="stylesheet" type="text/css" href="tooltip.css">
- <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
+<link rel="stylesheet" type="text/css" href="tooltip.css">
+<link rel="shortcut icon" type="image/png" href="/favicon.png"/>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-4051604993335718",
+          enable_page_level_ads: true
+     });
+</script>
 </head>
 <body>
 <div id=keret>
@@ -176,6 +195,18 @@ a{
 	<input id=meret type="text" name="msg" value="<?php echo $_POST["msg"]; ?>">
 	<br><input type="submit" class=button>
 	</form>
+	<form action="" method="post">
+	<br>
+	<div id=date><b id=cim>Last Hours</b></div>
+	<select id=meret name="lasthr">
+			<option value="1">1</option>
+			<option value="3">3</option>
+			<option value="6">6</option>
+			<option value="12">12</option>
+			<option value="24">24</option>
+	</select>
+	<br><input type="submit" class=button>
+	</form>
 </div><br>
 
 <div id=alsav style="width: 99%">
@@ -194,6 +225,18 @@ a{
 <br>
 
 <?php
+
+if(isset($_POST["lasthr"])){
+	$howlast = $_POST["lasthr"];
+	$messages = DB::query("select * from irclog where whattime >= NOW()- INTERVAL $howlast HOUR");
+	foreach ($messages as $row) {
+		echo "[" . $row['id'] . "] ";
+		echo "<i>" . $row['whattime'] . "</i>" . " -> ";
+		echo "<b>" . $row['fromuser'] . "</b>" . " -> ";
+		echo $row['msg'];
+		echo "<br>";
+	}
+}
 
 if(isset($_POST["msg"])) {
 	$msg = $_POST["msg"];
@@ -230,6 +273,21 @@ function highlight($wholetext, $substr){
 <div id=footer>Created by: Sontii | 2018 |
 Armory: https://tauriwow.com/armory#character-sheet.xml?r=%5BHU%5D%20Tauri%20WoW%20Server&n=S%C3%B8ntii</div></b>
 </div>
+<!--
+This site is written and maintained by: Sont/Sonti/Sontii/Sontika/Sontex (ok u got it).
+Source code can be found on: https://github.com/sontqq/tauri-irclog-browser
+
+CHANGELOG
+2018.10.26
+major
+-added last 1/3/6/12/24 hour button for fast access to the last messages
+minor
+-graphical tune
+idea
+-somekind of banner of new title
+-order buttons and labels into table for better look
+
+-->
 </body>
 
 </html>
