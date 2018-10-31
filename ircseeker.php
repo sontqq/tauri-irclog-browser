@@ -17,14 +17,80 @@
 	
 ?>
 <!DOCTYPE html>
-<html lang="hu">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="Cache-control" content="no-cache">
 <meta name="description" content="You can browse previous chat messages on Tauri-Wow">
+<meta name="google-site-verification" content="kh-AodzZ4P9UAWZaIy7ubpXhphv38MgU1nYPE7dhzto" />
+
+<script>
+window.onload = function() {
+if (!document.location.hash){
+    document.location.hash = 'teto';
+	}
+}
+</script>
+<script>
+var TxtRotate = function(el, toRotate, period) {
+  this.toRotate = toRotate;
+  this.el = el;
+  this.loopNum = 0;
+  this.period = parseInt(period, 10) || 2000;
+  this.txt = '';
+  this.tick();
+  this.isDeleting = false;
+};
+
+TxtRotate.prototype.tick = function() {
+  var i = this.loopNum % this.toRotate.length;
+  var fullTxt = this.toRotate[i];
+
+  if (this.isDeleting) {
+    this.txt = fullTxt.substring(0, this.txt.length - 1);
+  } else {
+    this.txt = fullTxt.substring(0, this.txt.length + 1);
+  }
+
+  this.el.innerHTML = '<span class="wrap">'+this.txt+'</span>';
+
+  var that = this;
+  var delta = 300 - Math.random() * 100;
+
+  if (this.isDeleting) { delta /= 2; }
+
+  if (!this.isDeleting && this.txt === fullTxt) {
+    delta = this.period;
+    this.isDeleting = true;
+  } else if (this.isDeleting && this.txt === '') {
+    this.isDeleting = false;
+    this.loopNum++;
+    delta = 500;
+  }
+
+  setTimeout(function() {
+    that.tick();
+  }, delta);
+};
+
+window.onload = function() {
+  var elements = document.getElementsByClassName('txt-rotate');
+  for (var i=0; i<elements.length; i++) {
+    var toRotate = elements[i].getAttribute('data-rotate');
+    var period = elements[i].getAttribute('data-period');
+    if (toRotate) {
+      new TxtRotate(elements[i], JSON.parse(toRotate), period);
+    }
+  }
+  // INJECT CSS
+  var css = document.createElement("style");
+  css.type = "text/css";
+  css.innerHTML = ".txt-rotate > .wrap { border-right: 0.08em solid #666 }";
+  document.body.appendChild(css);
+};
+</script>
 <title>Tauri IRC Log Browser</title>
 <style>
-
 .glitch-window{
 	position: absolute;
 	top: 0;
@@ -254,6 +320,9 @@ font-size: 3.5em;
 	font-weight: bold;
 	font-style: bold;
 }
+h1{ display: inline; font-size: 68px; }
+h2{ display: inline; }
+h3{ display: inline; font-weight: normal; }
 </style>
 <link rel="stylesheet" type="text/css" href="tooltip.css">
 <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
@@ -273,29 +342,29 @@ font-size: 3.5em;
 
   gtag('config', 'UA-128048345-1');
 </script>
-
 </head>
 <body>
-<div id=container>
+<div name="teto" id=container>
 <div id=content>
 <div id=keret>
 <a class="osztaly" href="https://sont.sytes.net/ircseeker.php" style="text-decoration:none">
-	<div id=focim>
+	<div id=focim><h1>
 	<center><b>
 		<span style="-webkit-animation:pop-in 0.5s;" class="txt-rotate fontbold" data-period="2000"
 			data-rotate='[ "Tauri IRClog browser " ]'>
 		</span>
-	</b></center>
+	</b></center></h1>
 	</div>
 	<center style="-webkit-animation:pop-in 0.5s;"><i>beta.</i><hr id=csaktelon></center>
 </a>
-<a style="-webkit-animation:pop-in 5s;" href="chart2.png"><div id=lebeg><div class="tool" data-tip="Collecting data since: 2018.09.29.">ALL TIME CHART<br><center>(click for image)</center></div></div></a>
-<center><div><img style="-webkit-animation:pop-in 0.5s;" src="chart.png" alt="chart" height="15%" width="50%"></div></center><br>
+<a style="-webkit-animation:pop-in 5s;" href="chart2.png"><div id=lebeg><div>ALL TIME CHART<br><center>(click for image)</center></div></div></a>
+<center><div><a href="https://sont.sytes.net/ircseeker.php"><img style="-webkit-animation:pop-in 0.5s;" src="chart.png" alt="chart" height="15%" width="50%"></a></div></center><br>
 <div id=mai style="-webkit-animation:pop-in 0.5s;"><center><b><div class="font">
+<h2>
 <?php
 	$msgdarab = DB::query("SELECT COUNT(*) from irclog where whattime >= CURDATE() group by WEEKDAY(whattime) order by WEEKDAY(whattime);");
 	foreach ($msgdarab as $row) { echo $row['COUNT(*)']; }
-?>  messages sent today</div>
+?>  messages sent today</h2></div>
 </b></center></div><br>
 <center>
 <div id=header style="width: 99%">
@@ -333,7 +402,7 @@ font-size: 3.5em;
 <br>
 <div id=keret2><div style="-webkit-animation:pop-in 0.5s;">
 <br>
-
+<h3>
 <?php
 
 if(isset($_POST["lasthr"])){
@@ -379,6 +448,7 @@ function highlight($wholetext, $substr){
 	return $replaced;
 }
 ?>
+</h3>
 </div>
 </div>
 </div>
@@ -386,65 +456,6 @@ function highlight($wholetext, $substr){
 Armory: https://tauriwow.com/armory#character-sheet.xml?r=%5BHU%5D%20Tauri%20WoW%20Server&n=S%C3%B8ntii</div></b>
 </div>
 </div>
-
-<script>
-var TxtRotate = function(el, toRotate, period) {
-  this.toRotate = toRotate;
-  this.el = el;
-  this.loopNum = 0;
-  this.period = parseInt(period, 10) || 2000;
-  this.txt = '';
-  this.tick();
-  this.isDeleting = false;
-};
-
-TxtRotate.prototype.tick = function() {
-  var i = this.loopNum % this.toRotate.length;
-  var fullTxt = this.toRotate[i];
-
-  if (this.isDeleting) {
-    this.txt = fullTxt.substring(0, this.txt.length - 1);
-  } else {
-    this.txt = fullTxt.substring(0, this.txt.length + 1);
-  }
-
-  this.el.innerHTML = '<span class="wrap">'+this.txt+'</span>';
-
-  var that = this;
-  var delta = 300 - Math.random() * 100;
-
-  if (this.isDeleting) { delta /= 2; }
-
-  if (!this.isDeleting && this.txt === fullTxt) {
-    delta = this.period;
-    this.isDeleting = true;
-  } else if (this.isDeleting && this.txt === '') {
-    this.isDeleting = false;
-    this.loopNum++;
-    delta = 500;
-  }
-
-  setTimeout(function() {
-    that.tick();
-  }, delta);
-};
-
-window.onload = function() {
-  var elements = document.getElementsByClassName('txt-rotate');
-  for (var i=0; i<elements.length; i++) {
-    var toRotate = elements[i].getAttribute('data-rotate');
-    var period = elements[i].getAttribute('data-period');
-    if (toRotate) {
-      new TxtRotate(elements[i], JSON.parse(toRotate), period);
-    }
-  }
-  // INJECT CSS
-  var css = document.createElement("style");
-  css.type = "text/css";
-  css.innerHTML = ".txt-rotate > .wrap { border-right: 0.08em solid #666 }";
-  document.body.appendChild(css);
-};
-</script>
 
 <!--
 This site is written and maintained by: Sont/Sonti/Sontii/Sontika/Sontex (ok u got it).
@@ -474,5 +485,18 @@ idea
 	-order buttons and labels into table for better look
 
 -->
+<div>
+<br/>
+<center>
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="">
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/hu_HU/i/scr/pixel.gif" width="1" height="1">
+</form>
+<i>Based on data since: 2018-09-29</i>
+</center>
+<br/><br/>
+</div>
 </body>
 </html>
