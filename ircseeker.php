@@ -22,7 +22,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="Cache-control" content="no-cache">
 <meta name="description" content="You can browse previous chat messages on Tauri-Wow">
-<meta name="google-site-verification" content="kh-AodzZ4P9UAWZaIy7ubpXhphv38MgU1nYPE7dhzto" />
+<meta name="google-site-verification" content="" />
 
 <script>
 window.onload = function() {
@@ -173,13 +173,13 @@ a{
 	border-radius: 10px;
 	padding: 5px;
 	border: 2px dashed black;
-	transition: background-color 3s;
-    -webkit-transition: background-color 3s;
+	transition: background-color 10s;
+    -webkit-transition: background-color 10s;
 }
 #keret:hover{
 	border: 2px dashed black;
-    transition: background-color 3s;
-    -webkit-transition: background-color 3s;
+    transition: background-color 10s;
+    -webkit-transition: background-color 10s;
 	background-color:#43ABC9;
 	/* B5C689 EFD469 F58B4C <-- YES THIS IS AN URL --> viget.com/articles/color-contrast */
 }
@@ -241,8 +241,11 @@ a{
 body{
 
 }
+img {
+    border-radius: 8px;
+}
 @media only screen and (max-device-width: 480px) {
-    img { width: 100%; height: 20%; }
+    img { width: 100%; height: 20%; border-radius: 20%; }
 	body { background-color: white; }
 	#cim { font-size: 300%; }
 	#date { text-align: center; width: 50%; margin: 0 auto; }
@@ -452,8 +455,7 @@ function highlight($wholetext, $substr){
 </div>
 </div>
 </div>
-<div id=footer style="-webkit-animation:pop-in 2s;">Made and maintained by: Sontii | 2018 |
-Armory: https://tauriwow.com/armory#character-sheet.xml?r=%5BHU%5D%20Tauri%20WoW%20Server&n=S%C3%B8ntii</div></b>
+<div id=footer style="-webkit-animation:pop-in 2s;">Made and maintained by: Sontii | 2018</div></b>
 </div>
 </div>
 
@@ -494,7 +496,8 @@ idea
 <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
 <img alt="" border="0" src="https://www.paypalobjects.com/hu_HU/i/scr/pixel.gif" width="1" height="1">
 </form>
-<i>Based on data since: 2018-09-29</i>
+<i>Based on data since: 2018-09-29</i><br>
+Armory: <a href="https://tauriwow.com/armory#character-sheet.xml?r=%5BHU%5D%20Tauri%20WoW%20Server&n=S%C3%B8ntii">Click!</a>
 </center>
 <br/><br/>
 </div>
