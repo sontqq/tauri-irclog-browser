@@ -15,6 +15,26 @@
 		include_once(COUNTER);
 	} else { echo "Counter fail."; };
 	
+	// LANGUAGE DEFINITIONS
+	$lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+	if($lang == "hu"){
+		$senttoday = "üzenet érkezett ma";
+		$keyword = "Kulcsszó";
+		$lasthour = "Utolsó órák";
+		$submit = "Küldés";
+		$from = "Mettől";
+		$until = "Meddig";
+		$basedon = "Adatok elérhetőek:";
+	}
+	else{
+		$senttoday = "messages sent today";
+		$keyword = "Keyword";
+		$lasthour = "Last hours";
+		$submit = "Submit";
+		$from = "From";
+		$until = "Until";
+		$basedon = "Based on data since:";			
+	}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -210,7 +230,7 @@ a{
 #footer:hover{ opacity: 0.2; }
 #lebeg{
 	position: fixed;
-	top: 15%;
+	top: 75%;
 	right: 10%;
 	display: block;
 	cursor: pointer;
@@ -239,7 +259,10 @@ a{
 	border-radius: 3px;
 }
 body{
-
+ zoom: 1;
+}
+#zooom{
+	zoom: 1;
 }
 img {
     border-radius: 8px;
@@ -332,18 +355,18 @@ h3{ display: inline; font-weight: normal; }
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <script>
      (adsbygoogle = window.adsbygoogle || []).push({
-          google_ad_client: "ca-pub-4051604993335718",
+          google_ad_client: "",
           enable_page_level_ads: true
      });
 </script>
 <!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-128048345-1"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'UA-128048345-1');
+  gtag('config', '');
 </script>
 </head>
 <body>
@@ -370,24 +393,24 @@ h3{ display: inline; font-weight: normal; }
 ?>  messages sent today</h2></div>
 </b></center></div><br>
 <center>
-<div id=header style="width: 99%">
+<div id="header" style="width: 99%">
 	<form action="" method="post">
 	<br>
 	<div style="-webkit-animation:pop-in 0.5s;" id=date><b id=cim>Keyword</b></div>
-	<input id="key" style="-webkit-animation:pop-in 0.5s;" type="text" name="msg" value="<?php echo $_POST["msg"]; ?>">
-	<br><input style="-webkit-animation:pop-in 0.5s;" type="submit" class=button>
+	<input id="key" style="-webkit-animation:pop-in 0.5s;" type="text" name="msg" id="zooom" value="<?php echo $_POST["msg"]; ?>">
+	<br><input style="-webkit-animation:pop-in 0.5s;" type="submit" id="zooom" class=button>
 	</form>
 	<form action="" method="post">
 	<br>
 	<div style="-webkit-animation:pop-in 0.5s;" id=date><b id=cim>Last Hours</b></div>
-	<select style="-webkit-animation:pop-in 0.5s;" name="lasthr">
+	<select style="-webkit-animation:pop-in 0.5s;" id="zoom" name="lasthr">
 			<option value="1">1</option>
 			<option value="3">3</option>
 			<option value="6">6</option>
 			<option value="12">12</option>
 			<option value="24">24</option>
 	</select>
-	<br><input style="-webkit-animation:pop-in 0.5s;" type="submit" class=button>
+	<br><input style="-webkit-animation:pop-in 0.5s;" type="submit" id="zoom" class=button>
 	</form>
 </div><br>
 
@@ -395,10 +418,10 @@ h3{ display: inline; font-weight: normal; }
 	<form action="" method="post">
 	<br>
 	<div style="-webkit-animation:pop-in 0.5s;" id=date><b id=cim>From</b></div>
-	<input style="-webkit-animation:pop-in 0.5s;" type="date" name="datefrom" value="<?php echo date('Y-m-d',strtotime("-1 days")); ?>"><!--<input type="time" name="timefrom" value="">--><br>
+	<input style="-webkit-animation:pop-in 0.5s;" id="zoom" type="date" name="datefrom" value="<?php echo date('Y-m-d',strtotime("-1 days")); ?>"><!--<input type="time" name="timefrom" value="">--><br>
 	<div style="-webkit-animation:pop-in 0.5s;" id=date><b id=cim>Until</b></div>
-	<input style="-webkit-animation:pop-in 0.5s;" type="date" name="dateto" value="<?php echo date('Y-m-d'); ?>"><!--<input type="time" name="timefrom" value="">-->
-	<br><input style="-webkit-animation:pop-in 0.5s;" type="submit" class=button>
+	<input style="-webkit-animation:pop-in 0.5s;" id="zoom" type="date" name="dateto" value="<?php echo date('Y-m-d'); ?>"><!--<input type="time" name="timefrom" value="">-->
+	<br><input style="-webkit-animation:pop-in 0.5s;" type="submit" id="zoom" class=button>
 	</form>
 </div>
 </center>
@@ -460,32 +483,6 @@ function highlight($wholetext, $substr){
 </div>
 
 <!--
-This site is written and maintained by: Sont/Sonti/Sontii/Sontika/Sontex (ok u got it).
-Source code can be found on: https://github.com/sontqq/tauri-irclog-browser
-Database behind: MySQL
-
-CHANGELOG
-
-2018.10.27.
-major
-	-now properly saves and shows messages longer than 255 characters. new limit is: 8196
-	-new pop-in animation on page load
-minor
-	-graphical fixes
-idea
-	-language selector or single lang(full)
-	-userinfo, userstat
-	-fix for special characters
-
-2018.10.26.
-major
-	-added last 1/3/6/12/24 hour button for fast access to the last messages
-minor
-	-graphical tune
-idea
-	-somekind of banner of new title
-	-order buttons and labels into table for better look
-
 -->
 <div>
 <br/>
