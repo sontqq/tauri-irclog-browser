@@ -1,26 +1,20 @@
-# tauri-irclog-browser
+# TAURI IRCLOG BROWSER
 Browse the chat history of TauriWow IRC
 
-**dbclass.php**
-
+```dbclass.php```
 MySQL Database class
 
-**esp.ino**
-
+```esp.ino```
 The ESP code - the bot itself
 
-**irclog.php**
-
+```irclog.php```
 Landing page of the IRCBot
 
-**ircseeker.php**
-
+```ircseeker.php```
 Frontend
 
-**genplot.py**
-
+```genplot.py```
 plots today statistics
 
-**genplot2.py**
-
+```genplot2.py```
 plots alltime statistics
